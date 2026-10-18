@@ -1,0 +1,44 @@
+/* VXPOINTS — LOGIKA WEBSITE. Semua konten edit di products.js */
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const money = n => 'Rp' + Number(n || 0).toLocaleString('id-ID');
+const safe = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const photo = s => s && String(s).trim();
+const wa = message => `https://wa.me/${String(STORE.whatsapp).replace(/\D/g,'')}?text=${encodeURIComponent(message)}`;
+const categoryNames = {standar:'Standar',pelajar:'Pelajar',sultan:'Sultan','id-cantik':'ID Cantik'};
+let activeFilter = 'all', search = '', currentSlide = 0, timer;
+const productByCode = code => STORE.products.find(p => p.code === code);
+function imageMarkup(url, className='') { return photo(url) ? `<img class="${className}" src="${safe(url)}" alt="Foto produk" loading="lazy" onerror="this.style.display='none'">` : '<span class="photo-placeholder">VX</span>'; }
+function renderBanners(){
+ $('slides').innerHTML = STORE.banners.map(b => `<article class="slide">${photo(b.image)?`<img class="slide-bg" src="${safe(b.image)}" alt="">`:''}<div class="slide-shade"></div><div class="slide-content"><div class="slide-label">${safe(b.subtitle)}</div><h1>${safe(b.title)}</h1><p>${safe(b.description)}</p><a class="btn btn-primary banner-link" href="${safe(b.target || '#produk')}" data-filter="${safe(b.filter || '')}">${safe(b.button)} ↗</a></div></article>`).join('');
+ $('slideDots').innerHTML = STORE.banners.map((_,i)=>`<button aria-label="Ke banner ${i+1}" data-slide="${i}" class="${i===0?'active':''}"></button>`).join('');
+ document.querySelectorAll('[data-slide]').forEach(btn=>btn.addEventListener('click',()=>moveSlide(Number(btn.dataset.slide))));
+ document.querySelectorAll('.banner-link').forEach(link=>link.addEventListener('click',()=>{if(link.dataset.filter) selectFilter(link.dataset.filter)}));
+ moveSlide(0); restartSlide();
+}
+function moveSlide(n){if(!STORE.banners.length)return;currentSlide=(n+STORE.banners.length)%STORE.banners.length;$('slides').style.transform=`translateX(-${currentSlide*100}%)`;document.querySelectorAll('[data-slide]').forEach((b,i)=>b.classList.toggle('active',i===currentSlide));}
+function restartSlide(){clearInterval(timer);if(STORE.banners.length>1)timer=setInterval(()=>moveSlide(currentSlide+1),5500)}
+function renderCategories(){ $('categories').innerHTML=STORE.categories.map(c=>`<button class="category" data-category="${safe(c.key)}">${photo(c.image)?`<img src="${safe(c.image)}" alt="${safe(c.name)}" loading="lazy">`:''}<span class="cat-arrow">↗</span><strong>${safe(c.name)}</strong><small>${safe(c.caption)}</small></button>`).join(''); document.querySelectorAll('[data-category]').forEach(b=>b.addEventListener('click',()=>{selectFilter(b.dataset.category);$('produk').scrollIntoView({behavior:'smooth'})})); }
+function accountCard(p){const sold=p.status==='sold';return `<button class="product-card" data-code="${safe(p.code)}"><div class="product-photo">${imageMarkup((p.images||[])[0])}<span class="badge ${sold?'sold':''}">${sold?'SOLD OUT':p.flashSale?'FLASH SALE':'READY STOCK'}</span></div><div class="product-info"><h3>${safe(p.name)}</h3><div class="code">KODE: ${safe(p.code)}</div><strong class="price">${money(p.price)}</strong>${p.oldPrice?`<span class="old-price">${money(p.oldPrice)}</span>`:''}<div class="card-action">${sold?'Lihat Detail':'Lihat Spesifikasi'} ↗</div></div></button>`;}
+function idCard(p){const sold=p.status==='sold';return `<button class="product-card id-card" data-id="${safe(p.id)}" ${sold?'disabled':''}><span class="id-grade grade-${safe(p.grade.toLowerCase())}">GRADE ${safe(p.grade)}</span><strong class="id-number">${safe(p.id)}</strong><span class="id-price">${sold?'SOLD OUT':money(p.price)}</span></button>`;}
+function bindCards(){document.querySelectorAll('[data-code]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.code)));document.querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{const p=STORE.prettyIds.find(x=>x.id===b.dataset.id);if(p&&p.status!=='sold')window.open(wa(`Halo Admin VXPOINTS! Saya mau pesan ID Cantik ${p.id}, Grade ${p.grade}, harga ${money(p.price)}. Apakah masih tersedia?`),'_blank','noopener,noreferrer')}));}
+function renderFlash(){const items=STORE.products.filter(p=>p.flashSale&&p.status!=='sold');$('flashProducts').innerHTML=items.length?items.map(accountCard).join(''):'<p class="empty-state">Flash Sale belum tersedia.</p>';bindCards();}
+function renderCatalog(){const term=search.trim().toLowerCase();let items;
+ if(activeFilter==='id-cantik'){items=STORE.prettyIds.filter(p=>[p.id,p.grade,`grade ${p.grade}`,money(p.price)].some(x=>String(x).toLowerCase().includes(term)));$('productGrid').classList.add('id-grid');$('catalogTitle').innerHTML='Koleksi <span>ID Cantik</span>'}
+ else{items=STORE.products.filter(p=>(activeFilter==='all'||p.category===activeFilter)&&[p.code,p.name,p.category,p.description,...Object.values(p.specs||{})].some(x=>String(x).toLowerCase().includes(term)));$('productGrid').classList.remove('id-grid');$('catalogTitle').innerHTML=activeFilter==='all'?'Explore <span>Marketplace</span>':`${safe(categoryNames[activeFilter])} <span>Collection</span>`}
+ $('productGrid').innerHTML=items.map(activeFilter==='id-cantik'?idCard:accountCard).join('');$('resultCount').textContent=`${items.length} produk`;$('emptyState').hidden=items.length>0;document.querySelectorAll('[data-filter]').forEach(b=>{if(b.closest('#filterTabs'))b.classList.toggle('active',b.dataset.filter===activeFilter)});bindCards();}
+function selectFilter(filter){activeFilter=['all','standar','pelajar','sultan','id-cantik'].includes(filter)?filter:'all';renderCatalog()}
+function openDetail(code){const p=productByCode(code);if(!p)return;const images=(p.images||[]).filter(photo);const sold=p.status==='sold';const specs=Object.entries(p.specs||{}).map(([k,v])=>`<div><small>${safe(k)}</small><strong>${safe(v)}</strong></div>`).join('');$('detailContent').innerHTML=`<div class="detail-layout"><div><div id="detailMain" class="detail-main-image ${images.length?'':'detail-placeholder'}">${images.length?`<img class="detail-main-image" src="${safe(images[0])}" alt="${safe(p.name)}">`:'VXPOINTS'}</div>${images.length>1?`<div class="thumbs">${images.map((src,i)=>`<button data-img="${i}" aria-label="Foto ${i+1}"><img src="${safe(src)}" alt=""></button>`).join('')}</div>`:''}</div><div><div class="eyebrow">${safe(categoryNames[p.category]||p.category)} • ${sold?'SOLD OUT':'READY STOCK'}</div><h2>${safe(p.name)}</h2><div class="code">KODE AKUN: ${safe(p.code)}</div><p class="detail-desc">${safe(p.description)}</p><h3>Spesifikasi Akun</h3><div class="specs">${specs||'<p>Hubungi admin untuk detail.</p>'}</div><div class="detail-price">${money(p.price)}</div><a class="btn detail-buy" ${sold?'aria-disabled="true" style="opacity:.5;pointer-events:none"':''} href="${safe(wa(`Halo Admin VXPOINTS! Saya mau pesan akun ${p.name} (kode ${p.code}) seharga ${money(p.price)}. Apakah masih tersedia?`))}" target="_blank" rel="noopener noreferrer">${sold?'STOK HABIS':'BELI VIA WHATSAPP ↗'}</a></div></div>`;
+ document.querySelectorAll('[data-img]').forEach(btn=>btn.addEventListener('click',()=>{$('detailMain').innerHTML=`<img class="detail-main-image" src="${safe(images[Number(btn.dataset.img)])}" alt="${safe(p.name)}">`}));$('detailDialog').showModal();}
+$('prevSlide').addEventListener('click',()=>{moveSlide(currentSlide-1);restartSlide()});$('nextSlide').addEventListener('click',()=>{moveSlide(currentSlide+1);restartSlide()});
+$('slider').addEventListener('mouseenter',()=>clearInterval(timer));$('slider').addEventListener('mouseleave',restartSlide);
+$('filterTabs').addEventListener('click',e=>{const btn=e.target.closest('[data-filter]');if(btn)selectFilter(btn.dataset.filter)});
+$('searchToggle').addEventListener('click',()=>{$('searchPanel').hidden=!$('searchPanel').hidden;if(!$('searchPanel').hidden)$('searchInput').focus()});
+$('searchClose').addEventListener('click',()=>{$('searchPanel').hidden=true;$('searchInput').value='';search='';renderCatalog()});
+$('searchInput').addEventListener('input',e=>{search=e.target.value;renderCatalog();if(search.trim())$('produk').scrollIntoView({behavior:'smooth',block:'start'})});
+$('seeAll').addEventListener('click',()=>{selectFilter('all');$('produk').scrollIntoView({behavior:'smooth'})});
+$('closeDetail').addEventListener('click',()=>$('detailDialog').close());$('detailDialog').addEventListener('click',e=>{if(e.target===$('detailDialog'))$('detailDialog').close()});
+$('supportLink').href=wa('Halo Admin VXPOINTS! Saya ingin bertanya tentang stok akun.');$('helpLink').href=$('supportLink').href;$('supportLink').target=$('helpLink').target='_blank';$('year').textContent=new Date().getFullYear();
+renderBanners();renderCategories();renderFlash();renderCatalog();
+})();
