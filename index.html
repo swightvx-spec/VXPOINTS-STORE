@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#09090b">
+  <title>VXPOINTS | Gaming Marketplace</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">VXPOINTS • YOUR GAME, YOUR EMPIRE</div>
+  <header class="header wrap">
+    <a class="brand" href="#home">VX<span>POINTS</span><b>.</b></a>
+    <nav><a href="#home">HOME</a><a href="#market">MARKETPLACE</a><a href="#cara-order">CARA ORDER</a></nav>
+    <a class="header-btn" href="#market">EXPLORE ↗</a>
+  </header>
+
+  <main>
+    <section class="hero wrap" id="home">
+      <div><p class="eyebrow">THE PREMIUM GAMING MARKETPLACE</p><h1>LEVEL UP<br>YOUR <em>EMPIRE.</em></h1><p class="intro">Temukan akun Free Fire dan ID cantik pilihan di VXPOINTS. Lihat spesifikasi sebelum menghubungi admin.</p><a class="button" href="#market">EXPLORE MARKET →</a></div>
+      <div class="hero-logo" aria-hidden="true">VX</div>
+    </section>
+
+    <section class="market wrap" id="market">
+      <p class="eyebrow">DISCOVER THE COLLECTION</p>
+      <h2>OUR <span>MARKETPLACE</span></h2>
+      <p class="muted">Klik produk untuk melihat spesifikasi lengkap.</p>
+      <div class="filters" id="filters" aria-label="Filter kategori">
+        <button class="active" data-category="semua">SEMUA</button>
+        <button data-category="premium">PREMIUM</button>
+        <button data-category="pelajar">PELAJAR</button>
+        <button data-category="standar">STANDAR</button>
+        <button data-category="id-cantik">ID CANTIK</button>
+      </div>
+      <div class="product-grid" id="product-grid"></div>
+    </section>
+
+    <section class="how wrap" id="cara-order">
+      <p class="eyebrow">SIMPLE & DIRECT</p><h2>HOW TO <span>ORDER</span></h2>
+      <div class="steps"><div><b>01</b><h3>Pilih Produk</h3><p>Pilih akun atau ID cantik yang diinginkan.</p></div><div><b>02</b><h3>Lihat Detail</h3><p>Periksa spek, grade, harga, dan status stok.</p></div><div><b>03</b><h3>Chat Admin</h3><p>Tekan beli untuk membuka WhatsApp dengan detail pesanan.</p></div></div>
+    </section>
+  </main>
+
+  <footer class="wrap">© 2026 VXPOINTS • YOUR GAME, YOUR EMPIRE</footer>
+
+  <!-- POPUP DETAIL: terbuka ketika produk diklik -->
+  <div class="modal" id="detail-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+      <button class="close" type="button" data-close aria-label="Tutup detail">✕</button>
+      <div id="detail-content"></div>
+    </section>
+  </div>
+
+  <!-- Edit daftar produk HANYA di products.js -->
+  <script src="products.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
