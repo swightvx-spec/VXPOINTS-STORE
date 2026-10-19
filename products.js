@@ -20,12 +20,12 @@ const STORE = {
     { key: "id-cantik", name: "ID Cantik", caption: "Nomor pilihan", image: "" }
   ],
   products: [
-    { code: "VX001", name: "SG OPM POLOSAN", category: "sultan", price: 550000, oldPrice: 690000, flashSale: true, status: "sale", images: ["", "", ""], description: "Akun koleksi premium untuk pemain yang mengutamakan penampilan.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
-    { code: "VX002", name: "FJ V1 + POKER SULTAN", category: "pelajar", price: 175000, oldPrice: 230000, flashSale: true, status: "sale", images: ["", "", ""], description: "Akun dengan harga ramah pelajar.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
-    { code: "VX003", name: "S1-S12 ON SULTAN", category: "standar", price: 95000, flashSale: false, status: "sale", images: ["", "", ""], description: "Pilihan standar untuk mulai bermain.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
-    { code: "VX004", name: "OPM + SET BNL", category: "sultan", price: 780000, oldPrice: 900000, flashSale: true, status: "sale", images: ["", "", ""], description: "Akun dengan berbagai koleksi spesial.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
-    { code: "VX005", name: "OPM + RAPPER POLOSAN", category: "pelajar", price: 135000, flashSale: false, status: "sold", images: ["", "", ""], description: "Akun ringan di budget dengan koleksi menarik.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
-    { code: "VX006", name: "POKER OPM + RAPPER", category: "standar", price: 110000, flashSale: false, status: "sale", images: ["", "", ""], description: "Akun standar siap pilih.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } }
+    { code: "VX001", name: "Kosong", category: "sultan", price: 0, oldPrice: 0, flashSale: true, status: "sold", images: ["", "", ""], description: "Akun koleksi premium untuk pemain yang mengutamakan penampilan.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
+    { code: "VX002", name: "Kosong", category: "pelajar", price: 0, oldPrice: 0, flashSale: true, status: "Sold", images: ["", "", ""], description: "Akun dengan harga ramah pelajar.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
+    { code: "VX003", name: "Kosong", category: "standar", price: 0, flashSale: false, status: "sold", images: ["", "", ""], description: "Pilihan standar untuk mulai bermain.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
+    { code: "VX004", name: "Kosong", category: "sultan", price: 0, oldPrice: 0, flashSale: true, status: "sale", images: ["", "", ""], description: "Akun dengan berbagai koleksi spesial.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
+    { code: "VX005", name: "Kosong", category: "pelajar", price: 0, flashSale: false, status: "sold", images: ["", "", ""], description: "Akun ringan di budget dengan koleksi menarik.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } },
+    { code: "VX006", name: "Kosong", category: "standar", price: 0, flashSale: false, status: "sold", images: ["", "", ""], description: "Akun standar siap pilih.", specs: { Level: "70", Vault: "Isi jumlah vault", "Level Prime": "Isi level prime", Evo: "Isi jumlah evo", "Max Evo": "Isi jumlah max evo" } }
   ],
   /* STATUS: ubah status: "sale" menjadi status: "sold" untuk menandai TERJUAL.
    FOTO AKUN: images: ["foto1.jpg", "foto2.jpg", "foto3.jpg"]
@@ -37,10 +37,10 @@ const STORE = {
      Grade HANYA A, B, C, D, F — tidak ada E.
      Klik kartu ID langsung membuka chat WhatsApp. */
   prettyIds: [
-    { id: "123456789", grade: "A", price: 250000, status: "sale" },
-    { id: "112233445", grade: "B", price: 175000, status: "sale" },
-    { id: "777123456", grade: "C", price: 120000, status: "sale" },
-    { id: "987654321", grade: "D", price: 85000, status: "sale" },
-    { id: "246813579", grade: "F", price: 50000, status: "sale" }
+    { id: "18588885555", grade: "A", price: 50000, status: "sale" },
+    { id: "Kosong", grade: "B", price: 0, status: "sold" },
+    { id: "kosong", grade: "C", price: 0, status: "sold" },
+    { id: "kosong", grade: "D", price: 0, status: "sold" },
+    { id: "246813579", grade: "F", price: 0, status: "sold" }
   ]
 };
